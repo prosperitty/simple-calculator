@@ -5,22 +5,22 @@ let total = undefined;
 
 const calculate = {
     add: function(a,b) {
-        total = parseInt(a) + parseInt(b);
+        total = parseFloat(a) + parseFloat(b);
         updateDisplay(total);
     },
     subtract: function(a,b) {
-        total = parseInt(a) - parseInt(b);
+        total = parseFloat(a) - parseFloat(b);
         updateDisplay(total);
     },
     multiply: function(a,b) {
-        total = parseInt(a) * parseInt(b);
+        total = parseFloat(a) * parseFloat(b);
         updateDisplay(total);
     },
     divide: function(a,b) {
         if (b === 0) {
             return 'error';
         } else {
-            total = parseInt(a) / parseInt(b);
+            total = parseFloat(a) / parseFloat(b);
             updateDisplay(total);
         };
     },
@@ -55,7 +55,7 @@ const operate = function(a, b, operator) {
            calculate.divide(a,b);
             break;
        default:
-           console.log(operand2);
+           console.log('error');
            break;
     }
 };
@@ -64,28 +64,58 @@ const getKey = function() {
     calculatorKeys.forEach(element => {
         element.addEventListener('click', (e) => {     
             if(e.target.matches('.num-keys')) {
-                displayValue = displayValue + e.target.innerText;
-                updateDisplay(displayValue);
+                if(userInput.operand1 !== undefined) {
+                    getSecondOperand(e);
+                } else {
+                    getFirstOperand(e);
+                    console.log('getting first value');
+                }
             } else if(e.target.matches('.operator-keys')) {
-                userInput.operator = e.target.innerText
-                if(userInput.operand2 === undefined){
-                    if(total === undefined){
-                        userInput.operand1 = displayValue;
-                        displayValue = '';
-                    } else {
-                        displayValue = '';
-                        console.log('total is filled');
-                    }
-                } 
+                storeValue(e);
             } else if(e.target.matches('#total-key')) {
-                userInput.operand2 = displayValue;
+                // getSecondOperand();
                 operate(userInput.operand1,userInput.operand2,userInput.operator);
                 userInput.operand2 = undefined;
                 userInput.operand1 = total;
+                updateDisplay(total);
             }
+            console.log(displayValue);
         });
     });
 };
+
+const getFirstOperand = function(e) {
+    displayValue = displayValue + e.target.innerText;
+    updateDisplay(displayValue);
+}
+
+const getSecondOperand = function(e) {
+    userInput.operand2 = displayValue + e.target.innerText
+    updateDisplay(userInput.operand2);
+    console.log('getting second value');
+};
+
+const storeValue = function(e){
+    userInput.operator = e.target.innerText
+    if(userInput.operand2 === undefined){
+        if(userInput.operand1 === undefined ){
+            userInput.operand1 = displayValue;
+            displayValue = '';
+            updateDisplay(displayValue);
+        } else {
+            displayValue = '';
+            updateDisplay(displayValue);
+            console.log('operand1 is filled');
+        }
+    } else if(userInput.operand1 && userInput.operand2 !== undefined){
+        operate(userInput.operand1,userInput.operand2,userInput.operator);
+        userInput.operand2 = undefined;
+        userInput.operand1 = total;
+        updateDisplay(total);
+    }
+};
+
+
 
 
 function runfunc() {
