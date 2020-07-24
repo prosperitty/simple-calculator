@@ -39,7 +39,6 @@ const userInput = {
     operator: undefined,
 };
 
-
 const operate = function(a, b, operator) {
     switch(operator){
         case '+':
@@ -64,25 +63,26 @@ const getKey = function() {
     calculatorKeys.forEach(element => {
         element.addEventListener('click', (e) => {     
             if(e.target.matches('.num-keys')) {
-                if(userInput.operand1 !== undefined) {
-                    getSecondOperand(e);
-                } else {
+                if(userInput.operand1 === undefined) {
                     getFirstOperand(e);
-                    console.log('getting first value');
+                } else if((userInput.operand1 && userInput.operator) !== undefined) {
+                    getSecondOperand(e);
                 }
             } else if(e.target.matches('.operator-keys')) {
                 storeValue(e);
             } else if(e.target.matches('#total-key')) {
-                // getSecondOperand();
-                operate(userInput.operand1,userInput.operand2,userInput.operator);
-                userInput.operand2 = undefined;
-                userInput.operand1 = total;
-                updateDisplay(total);
+                getResults();       
+                userInput.operator = undefined;         
             }
             console.log(displayValue);
+            console.log(userInput);
         });
     });
 };
+
+const updateDisplay = function(value){
+    display.value = value
+}
 
 const getFirstOperand = function(e) {
     displayValue = displayValue + e.target.innerText;
@@ -90,94 +90,54 @@ const getFirstOperand = function(e) {
 }
 
 const getSecondOperand = function(e) {
-    userInput.operand2 = displayValue + e.target.innerText
-    updateDisplay(userInput.operand2);
-    console.log('getting second value');
+    displayValue = displayValue + e.target.innerText;
+    userInput.operand2 = displayValue;
+    updateDisplay(displayValue);
 };
 
-const storeValue = function(e){
+const getResults = function() {
+    operate(userInput.operand1,userInput.operand2,userInput.operator);
+    displayValue = ''
+    userInput.operand2 = undefined;
+    userInput.operand1 = total;
+}
+
+const storeOperator = function(e) {
     userInput.operator = e.target.innerText
+}
+
+const storeValue = function(e){
     if(userInput.operand2 === undefined){
         if(userInput.operand1 === undefined ){
+            storeOperator(e);
             userInput.operand1 = displayValue;
             displayValue = '';
             updateDisplay(displayValue);
         } else {
+            storeOperator(e);
             displayValue = '';
             updateDisplay(displayValue);
-            console.log('operand1 is filled');
         }
     } else if(userInput.operand1 && userInput.operand2 !== undefined){
-        operate(userInput.operand1,userInput.operand2,userInput.operator);
-        userInput.operand2 = undefined;
-        userInput.operand1 = total;
-        updateDisplay(total);
+        getResults();
+        storeOperator(e);
+        userInput.operator = undefined;
     }
 };
 
-
-
-
-function runfunc() {
+function runFunc() {
     getKey();
+    updateDisplay(displayValue);
 }
 
-runfunc();
+runFunc();
 
-// const getNumber1 = function() {
-//     calculatorKeys.forEach(element => {
-//         element.addEventListener('click', (e) => {
-//             if(e.target.matches('.num-keys')){
-//                 displayValue = displayValue + e.target.innerText;
-//                 updateDisplay(displayValue);
 
-//             }
-//         });
-//     }); 
-// };
 
-// const getNumber2 = function() {
-//     calculatorKeys.forEach(element => {
-//         element.addEventListener('click', (e) => {
-//             if(e.target.matches('.num-keys')){
-//                 // displayValue = displayValue + e.target.innerText;
-//                 updateDisplay(displayValue);
-//                 userInput.operand2 = displayValue;
-//             };
-//         });
-//     }); 
-// };
 
-// const getOperator = function() {
-//     calculatorKeys.forEach(element => {
-//         element.addEventListener('click', (e) => {
-//             if(e.target.matches('.operator-keys')){
-//                 userInput.operand1 = displayValue
-//                 displayValue = '';
-//                 userInput.operator = e.target.innerText;
-//                 // updateDisplay(displayValue);
-//                 getNumber2();
-//             }
-//         });
-//     }); 
-// }
 
-// const sum = function () {
-//     this.addEventListener('click', (e) => {
-//         if(e.target.innerText === '='){
-//             operate(userInput.operand1, userInput.operand2, userInput.operator);
-//             displayValue = '';
-//             updateDisplay(total);
-//         }
-//     })
-// }
-
-const updateDisplay = function(value){
-    display.value = value
-}
 
 // getNumber1();
 // getOperator();
-updateDisplay(displayValue);
 // sum();
 // operate(userInput.operand1, userInput.operand2, userInput.operator)
