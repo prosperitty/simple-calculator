@@ -1,5 +1,6 @@
 const calculatorKeys = document.querySelectorAll('button');
 const display = document.querySelector('input');
+let isDecimal = false;
 let displayValue = '';
 let total = undefined;
 
@@ -73,38 +74,30 @@ const getKey = function() {
             } else if(e.target.matches('#total-key')) {
                 getResults();       
                 userInput.operator = undefined;         
+            } else if (e.target.matches('#clear-key')) {
+                if(userInput.operand2 !== undefined) {
+                    userInput.operand2 = undefined;
+                    clearEntry();
+                } else {
+                    clearEntry();
+                }
+            } else if(e.target.matches('#all-clear-key')) {
+                for(const i in userInput) {
+                    userInput[i] = undefined;
+                    clearEntry();
+                }
+            } else if(e.target.matches('#decimal-key')) {
+                if(!displayValue.includes('.')) {
+                    addDecimal(e);
+                } else {
+                    console.log('decimal already present');
+                }
             }
             console.log(displayValue);
             console.log(userInput);
         });
     });
 };
-
-const updateDisplay = function(value){
-    display.value = value
-}
-
-const getFirstOperand = function(e) {
-    displayValue = displayValue + e.target.innerText;
-    updateDisplay(displayValue);
-}
-
-const getSecondOperand = function(e) {
-    displayValue = displayValue + e.target.innerText;
-    userInput.operand2 = displayValue;
-    updateDisplay(displayValue);
-};
-
-const getResults = function() {
-    operate(userInput.operand1,userInput.operand2,userInput.operator);
-    displayValue = ''
-    userInput.operand2 = undefined;
-    userInput.operand1 = total;
-}
-
-const storeOperator = function(e) {
-    userInput.operator = e.target.innerText
-}
 
 const storeValue = function(e){
     if(userInput.operand2 === undefined){
@@ -125,19 +118,45 @@ const storeValue = function(e){
     }
 };
 
-function runFunc() {
-    getKey();
+const updateDisplay = function(value){
+    display.value = value;
+};
+
+const getFirstOperand = function(e) {
+    displayValue = displayValue + e.target.innerText;
+    updateDisplay(displayValue);
+};
+
+const getSecondOperand = function(e) {
+    displayValue = displayValue + e.target.innerText;
+    userInput.operand2 = displayValue;
+    updateDisplay(displayValue);
+};
+
+const getResults = function() {
+    operate(userInput.operand1,userInput.operand2,userInput.operator);
+    displayValue = '';
+    userInput.operand2 = undefined;
+    userInput.operand1 = total;
+};
+
+const clearEntry = function() {
+    displayValue = '';
     updateDisplay(displayValue);
 }
 
+const addDecimal = function(e) {
+    displayValue = displayValue + e.target.innerText;
+    updateDisplay(displayValue);
+};
+
+const storeOperator = function(e) {
+    userInput.operator = e.target.innerText;
+};
+
+function runFunc() {
+    getKey();
+    updateDisplay(displayValue);
+};
+
 runFunc();
-
-
-
-
-
-
-// getNumber1();
-// getOperator();
-// sum();
-// operate(userInput.operand1, userInput.operand2, userInput.operator)
