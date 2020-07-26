@@ -1,5 +1,7 @@
 const calculatorKeys = document.querySelectorAll('button');
 const display = document.querySelector('input');
+const span = document.querySelector('span');
+let displayInput = ``;
 let isDecimal = false;
 let displayValue = '';
 let total = undefined;
@@ -72,7 +74,8 @@ const getKey = function() {
             } else if(e.target.matches('.operator-keys')) {
                 storeValue(e);
             } else if(e.target.matches('#total-key')) {
-                getResults();       
+                getResults();   
+
                 userInput.operator = undefined;         
             } else if (e.target.matches('#clear-key')) {
                 if(userInput.operand2 !== undefined) {
@@ -83,8 +86,11 @@ const getKey = function() {
                 }
             } else if(e.target.matches('#all-clear-key')) {
                 for(const i in userInput) {
+                    displayInput = ``;
                     userInput[i] = undefined;
                     clearEntry();
+                    updateDisplay(displayValue);
+
                 }
             } else if(e.target.matches('#decimal-key')) {
                 if(!displayValue.includes('.')) {
@@ -120,6 +126,16 @@ const storeValue = function(e){
 
 const updateDisplay = function(value){
     display.value = value;
+    if (userInput.operand1 !== undefined) {
+        displayInput = `${userInput.operand1}`;
+    } 
+    if(userInput.operator !== undefined) {
+        displayInput = displayInput + ` ${userInput.operator}`;
+    }
+    if(userInput.operand2 !== undefined) {
+        displayInput = displayInput + ` ${userInput.operand2}`;
+    }
+    span.innerText = displayInput;
 };
 
 const getFirstOperand = function(e) {
