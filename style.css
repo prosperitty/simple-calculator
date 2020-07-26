@@ -11,15 +11,6 @@ h1 {
     text-align: center;
 }
 
-#main-container {
-    width: 400px;
-    height: 400px;
-    margin: 0 auto;
-    text-align: center;
-    display: grid;
-    grid-template-columns: 2fr 2fr 2fr;
-}
-
 button {
     font-family: 'Montserrat', sans-serif;
     border: 1px solid #5c63ce;
@@ -28,10 +19,44 @@ button {
     margin: 10px;
 }
 
+#all-clear-key:hover, #clear-key:hover {
+    background: #d88787;
+}
+
+.operator-keys:hover {
+    background: #87d892;
+}
+
+.num-keys:hover {
+    background: #d8d387;
+}
+
+#decimal-key:hover {
+    background: #d887d8;
+}
+
+#total-key:hover {
+    background: #87cfd8;
+}
+
 button:active {
     background: linear-gradient(45deg, #c24f2c, #b3aa38) ;
 }
 
+span {
+    position: absolute;
+    padding: 16px 20px;
+    color: gray;
+}
+
+#main-container {
+    width: 400px;
+    height: 400px;
+    margin: 0 auto;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr;
+}
 
 #input-box {
     font-family: 'Montserrat', sans-serif;
