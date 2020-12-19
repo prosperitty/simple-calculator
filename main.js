@@ -1,6 +1,7 @@
 const calculatorKeys = document.querySelectorAll('button');
 const display = document.querySelector('input');
 const span = document.querySelector('span');
+const operatorKeys = document.querySelectorAll('.operator-keys')
 let displayInput = ``;
 let isDecimal = false;
 let displayValue = '';
@@ -9,31 +10,32 @@ let total = undefined;
 const calculate = {
     add: function(a,b) {
         total = parseFloat(a) + parseFloat(b);
+        total = Math.round(total * 10000 ) / 10000;
         updateDisplay(total);
     },
     subtract: function(a,b) {
         total = parseFloat(a) - parseFloat(b);
+        total = Math.round(total * 10000 ) / 10000;
         updateDisplay(total);
     },
     multiply: function(a,b) {
         total = parseFloat(a) * parseFloat(b);
+        total = Math.round(total * 10000 ) / 10000;
         updateDisplay(total);
     },
     divide: function(a,b) {
-        if (b === 0) {
+        if (b === 0 || b === '0') {
+            clearEntry();
+            displayInput = 'ERROR';
+            span.innerText = displayInput;
+            userInput.operand1 = undefined;
             return 'error';
         } else {
             total = parseFloat(a) / parseFloat(b);
+            total = Math.round(total * 10000 ) / 10000
             updateDisplay(total);
         };
     },
-};
-
-const operators = {
-    '&plus': 'add',
-    '&minus': 'subtract',
-    '&multiply': 'multiply',
-    '&divide': 'divide',
 };
 
 const userInput = {
@@ -68,15 +70,23 @@ const getKey = function() {
             if(e.target.matches('.num-keys')) {
                 if(userInput.operand1 === undefined) {
                     getFirstOperand(e);
-                } else if((userInput.operand1 && userInput.operator) !== undefined) {
+                } else if(userInput.operator !== undefined) {
                     getSecondOperand(e);
                 }
             } else if(e.target.matches('.operator-keys')) {
                 storeValue(e);
+                if(e.target.innerText === userInput.operator){
+                    e.target.classList.add('selected');
+                }
+                removeToggle();
             } else if(e.target.matches('#total-key')) {
-                getResults();   
-
-                userInput.operator = undefined;         
+                if(userInput.operand1 !== undefined && userInput.operand2 !== undefined) {
+                    getResults();   
+                    userInput.operator = undefined;         
+                    displayInput = displayInput + ' =';
+                    span.innerText = displayInput;
+                    removeToggle();
+                }
             } else if (e.target.matches('#clear-key')) {
                 if(userInput.operand2 !== undefined) {
                     userInput.operand2 = undefined;
@@ -86,11 +96,11 @@ const getKey = function() {
                 }
             } else if(e.target.matches('#all-clear-key')) {
                 for(const i in userInput) {
-                    displayInput = ``;
+                    displayInput = '';
                     userInput[i] = undefined;
                     clearEntry();
+                    removeToggle();
                     updateDisplay(displayValue);
-
                 }
             } else if(e.target.matches('#decimal-key')) {
                 if(!displayValue.includes('.')) {
@@ -107,20 +117,20 @@ const getKey = function() {
 
 const storeValue = function(e){
     if(userInput.operand2 === undefined){
-        if(userInput.operand1 === undefined ){
-            storeOperator(e);
+        if(userInput.operand1 === undefined){
             userInput.operand1 = displayValue;
-            displayValue = '';
-            updateDisplay(displayValue);
+            storeOperator(e);
+            clearEntry();
         } else {
             storeOperator(e);
-            displayValue = '';
-            updateDisplay(displayValue);
+            clearEntry();
         }
-    } else if(userInput.operand1 && userInput.operand2 !== undefined){
+    } else if(userInput.operand2 !== undefined){
         getResults();
-        storeOperator(e);
+        displayInput = displayInput + ' =';
+        span.innerText = displayInput;
         userInput.operator = undefined;
+        storeOperator(e);
     }
 };
 
@@ -169,6 +179,14 @@ const addDecimal = function(e) {
 const storeOperator = function(e) {
     userInput.operator = e.target.innerText;
 };
+
+function removeToggle() {
+    operatorKeys.forEach(e => {
+        if(e.innerText !== userInput.operator) {
+            e.classList.remove('selected');
+        } 
+    }) 
+}
 
 function runFunc() {
     getKey();
