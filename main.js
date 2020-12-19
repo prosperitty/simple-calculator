@@ -78,6 +78,11 @@ const getKey = function() {
                 if(e.target.innerText === userInput.operator){
                     e.target.classList.add('selected');
                 }
+                if(userInput.operand1 === '') {
+                    userInput.operand1 = 0;
+                    displayInput = userInput.operand1 + displayInput;
+                    span.innerText = displayInput;
+                }
                 removeToggle();
             } else if(e.target.matches('#total-key')) {
                 if(userInput.operand1 !== undefined && userInput.operand2 !== undefined) {
