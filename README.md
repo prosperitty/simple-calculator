@@ -1,7 +1,14 @@
-Objective
+## Simple Calculator
 
-the objective of this project is to create a functional simple calculator with javascript, HTML, and CSS.
+### Overview
 
-Simple Calculator
+A simple calculator made with Javascript, HTML, and CSS.
 
-This calculator does basic math such as addition, subtraction, division, and multiplication. 
+This calculator does basic math such as addition, subtraction, division, and multiplication.
+
+[The Odin Project](https://www.theodinproject.com/courses/foundations/lessons/calculator);
+
+[Live Demo](https://alex-lvl.github.io/simple-calculator/);
+
+
+
