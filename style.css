@@ -45,8 +45,10 @@ button:active {
 
 span {
     position: absolute;
+    width: 358px;
     padding: 16px 20px;
     color: gray;
+    text-align: right;
 }
 
 #main-container {
@@ -69,7 +71,7 @@ span {
     padding: 0 20px;
     margin-bottom: 20px;
     width: 358px;
-    height: 50px;
+    height: 100px;
     outline: none;
 }
 
@@ -78,3 +80,12 @@ span {
     margin: 0 auto;
 }
 
+.selected {
+    background-color: #48cf46;
+    box-shadow: 1px 5px 5px rgba(0, 0, 0, 0.405);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.selected:hover{
+    background-color: #48cf46;
+}
