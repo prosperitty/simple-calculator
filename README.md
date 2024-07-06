@@ -8,7 +8,7 @@ This calculator does basic math such as addition, subtraction, division, and mul
 
 [The Odin Project](https://www.theodinproject.com/courses/foundations/lessons/calculator)
 
-[Live Demo](https://alex-lvl.github.io/simple-calculator/)
+[Live Demo](https://prosperitty.github.io/simple-calculator/)
 
 
 
